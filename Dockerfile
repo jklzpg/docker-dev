@@ -18,4 +18,4 @@ RUN apt-get update \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # If dev playbook exists then run
-RUN if [ -f "/application/ansible/setup-new-development-environment.yml" = "" ] ; then echo 'Run Playbook'; ansible-playbook ansible/setup-new-development-environment.yml; else echo 'skip playbook'; fi
+RUN if [ -f "/application/ansible/setup-new-development-environment.yml" ] ; then echo 'Run Playbook'; ansible-playbook ansible/setup-new-development-environment.yml; else echo 'skip playbook'; fi
