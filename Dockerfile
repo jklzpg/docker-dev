@@ -6,8 +6,6 @@ MAINTAINER Jared Spencer <jared@playgroundsessions.com>
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
-# MySQL 5.6
-FROM mysql:5.6
 # PHP 7.2
 FROM phpdockerio/php72-fpm
 WORKDIR "/application"
