@@ -1,13 +1,12 @@
 #############################
 # Playground Sessions | Dev #
 #############################
-FROM ubuntu:trusty
+FROM phpdockerio/php72-fpm
 MAINTAINER Jared Spencer <jared@playgroundsessions.com>
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
-# PHP 7.2
-FROM phpdockerio/php72-fpm
+
 WORKDIR "/application"
 
 # Install selected extensions and other stuff
