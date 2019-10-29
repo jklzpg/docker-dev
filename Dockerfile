@@ -15,7 +15,7 @@ RUN apt update; \
 
 # Install selected extensions and other stuff
 RUN apt-get update; \
-    apt-get -y --no-install-recommends install ansible git;
+    apt-get -y --no-install-recommends install python python-mysqldb ansible git;
 
 RUN echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts;
