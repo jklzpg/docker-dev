@@ -8,13 +8,3 @@ services:
     working_dir: /application
     volumes:
     - .:/application
-    environment:
-      - MYSQL_ROOT_PASSWORD=playground
-      - MYSQL_DATABASE=playground
-      - MYSQL_USER=playground
-      - MYSQL_PASSWORD=playground
-    ports:
-      - "22:22"
-      - "80:80"
-      - "443:443"
-      - "3306:3306"
