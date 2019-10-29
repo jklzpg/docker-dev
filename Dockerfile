@@ -12,14 +12,14 @@ WORKDIR "/application"
 # Install OS updates
 RUN apt-get update; \
     apt-get -y upgrade; \
-    apt-get update; \
     apt-get -y --no-install-recommends install \
         build-essential \
         dkms \
+        curl \
+        openssh-client \
         ansible \
         git; \
     echo "[local]" >> /etc/ansible/hosts && \
-    echo "localhost" >> /etc/ansible/hosts && \
     echo "local" >> /etc/ansible/hosts;
 
 ENTRYPOINT /bin/bash;
