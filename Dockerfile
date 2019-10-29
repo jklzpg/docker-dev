@@ -1,7 +1,8 @@
 #############################
 # Playground Sessions | Dev #
 #############################
-FROM ubuntu:18.04
+# FROM ubuntu:18.04
+FROM mysql:5.6
 MAINTAINER Jared Spencer <jared@playgroundsessions.com>
 
 # Fix debconf warnings upon build
