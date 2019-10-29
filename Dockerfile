@@ -10,14 +10,16 @@ ARG DEBIAN_FRONTEND=noninteractive
 WORKDIR "/application"
 
 # Install OS updates
-RUN apt update; \
-    apt -y upgrade;
-
-# Install selected extensions and other stuff
 RUN apt-get update; \
-    apt-get -y --no-install-recommends install python python-mysqldb ansible git;
+    apt-get -y upgrade; \
+    apt-get update; \
+    apt-get -y --no-install-recommends install \
+        build-essential \
+        dkms \
+        ansible \
+        git; \
+    echo "[local]" >> /etc/ansible/hosts && \
+    echo "localhost" >> /etc/ansible/hosts && \
+    echo "local" >> /etc/ansible/hosts;
 
-RUN echo "[local]" >> /etc/ansible/hosts && \
-    echo "localhost" >> /etc/ansible/hosts;
-
-ENTRYPOINT /bin/bash
+ENTRYPOINT /bin/bash;
