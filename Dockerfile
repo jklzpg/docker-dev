@@ -32,6 +32,7 @@ RUN apt-get -y --no-install-recommends install \
 # install PHP for enviroment
 RUN apt-get -y install \
     php7.2 \
+    php7.2-cli \
     php-mysql \
     php-curl \
     php-redis \
