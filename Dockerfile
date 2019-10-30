@@ -17,7 +17,6 @@ RUN apt-get -y upgrade; \
 
 # install items handled by ansible 
 RUN apt-get -y --no-install-recommends install \
-    nodejs \
     redis-server \
     ant \
     openssh-server;
