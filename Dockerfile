@@ -13,6 +13,7 @@ RUN apt-get update;
 RUN apt-get -y upgrade; \
     apt-get -y --no-install-recommends install \
         ansible \
+        sudo \
         git;
 
 # install items handled by ansible 
@@ -40,11 +41,20 @@ RUN apt-get -y install \
     php-mbstring \
     php-intl \
     php-zip;
-
+# tag local env for ansible
 RUN echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts && \
     echo "[docker]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts;
-RUN mkdir /home/root/.composer -p;
+# setup passwordless sudo
+RUN echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/passwordless-sudo
+# add new user to docker instance
+RUN useradd -ms /bin/bash pgdev && adduser pgdev sudo
+# act as new user
+USER pgdev
+# set workdir to user home
+WORKDIR /home/pgdev
+# add dir for composer
+RUN mkdir /home/pgdev/.composer -p;
 
 ENTRYPOINT /bin/bash;
