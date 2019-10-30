@@ -1,7 +1,7 @@
 #############################
 # Playground Sessions | Dev #
 #############################
-FROM mysql:5.6
+FROM ubuntu:18.04
 MAINTAINER Jared Spencer <jared@playgroundsessions.com>
 
 # Fix debconf warnings upon build
@@ -18,5 +18,6 @@ RUN echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts && \
     echo "[docker]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts;
+RUN mkdir /home/root/.composer -p;
 
 ENTRYPOINT /bin/bash;
