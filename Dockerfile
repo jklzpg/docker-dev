@@ -14,6 +14,33 @@ RUN apt-get -y upgrade; \
     apt-get -y --no-install-recommends install \
         ansible \
         git;
+
+# install items handled by ansible 
+RUN apt-get -y --no-install-recommends install \
+    nodejs \
+    redis-server \
+    ant \
+    openssh-server;
+#  Install Cypress dependencies
+RUN apt-get -y --no-install-recommends install \
+    xvfb \
+    libgtk2.0-0 \
+    libnotify-dev \
+    libgconf-2-4 \
+    libnss3 \
+    libxss1 \
+    libasound2
+# install PHP for enviroment
+RUN apt-get -y install \
+    php7.2 \
+    php-mysql \
+    php-curl \
+    php-redis \
+    php-simplexml \
+    php-mbstring \
+    php-intl \
+    php-zip;
+
 RUN echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts && \
     echo "[docker]" >> /etc/ansible/hosts && \
