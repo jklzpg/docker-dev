@@ -14,6 +14,8 @@ RUN apt-get -y upgrade; \
     apt-get -y --no-install-recommends install \
         ansible \
         sudo \
+        nodejs \
+        build-essential \
         git;
 
 # install items handled by ansible 
@@ -54,7 +56,14 @@ RUN useradd -ms /bin/bash pgdev && adduser pgdev sudo
 USER pgdev
 # set workdir to user home
 WORKDIR /home/pgdev
-# add dir for composer
-RUN mkdir /home/pgdev/.composer -p;
+
+# add dir for composer and node
+RUN mkdir /home/pgdev/.composer -p && mkdir /home/pgdev/.npm;
+
+# add volume for composer cache
+VOLUME /home/pgdev/.composer
+# add volume for node cache
+VOLUME /home/pgdev/.npm
+
 
 ENTRYPOINT /bin/bash;
