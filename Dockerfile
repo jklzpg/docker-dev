@@ -14,9 +14,9 @@ RUN apt-get -y upgrade; \
     apt-get -y --no-install-recommends install \
         ansible \
         sudo \
-        nodejs \
         build-essential \
         git \
+        curl \
 # install items handled by ansible 
         redis-server \
         ant \
@@ -30,18 +30,21 @@ RUN apt-get -y upgrade; \
         libxss1 \
         libasound2 \
         zip \
-        unzip;
-# install PHP for enviroment
-RUN apt-get -y install \
-    php7.2 \
-    php7.2-cli \
-    php-mysql \
-    php-curl \
-    php-redis \
-    php-simplexml \
-    php-mbstring \
-    php-intl \
-    php-zip;
+        unzip; && \
+# install nodejs
+        curl -sL https://deb.nodesource.com/setup_10.x | -E bash - && \
+        apt-get -y install \
+        nodejs \
+# install PHP for enviroment 
+        php7.2 \
+        php7.2-cli \
+        php-mysql \
+        php-curl \
+        php-redis \
+        php-simplexml \
+        php-mbstring \
+        php-intl \
+        php-zip;
 # tag local env for ansible
 RUN echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts && \
