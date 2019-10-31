@@ -30,11 +30,12 @@ RUN apt-get -y upgrade; \
         libxss1 \
         libasound2 \
         zip \
-        unzip; && \
+        unzip;
 # install nodejs
-        curl -sL https://deb.nodesource.com/setup_10.x | -E bash - && \
-        apt-get -y install \
+ RUN curl -sL https://deb.nodesource.com/setup_10.x | -E bash - ; && \
+    apt-get -y install \
         nodejs \
+        npm \
 # install PHP for enviroment 
         php7.2 \
         php7.2-cli \
