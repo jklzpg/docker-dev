@@ -32,8 +32,8 @@ RUN apt-get -y upgrade; \
         zip \
         unzip;
 # install nodejs
- RUN curl -sL https://deb.nodesource.com/setup_10.x | -E bash - ; && \
-    apt-get -y install \
+ RUN curl -sL https://deb.nodesource.com/setup_10.x | -E bash - ;
+ RUN apt-get -y install \
         nodejs \
         npm \
 # install PHP for enviroment 
