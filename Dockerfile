@@ -2,7 +2,7 @@
 # Playground Sessions | Dev #
 #############################
 FROM ubuntu:18.04 AS pgdev_step1
-MAINTAINER Jared Spencer <jared@playgroundsessions.com>
+LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
@@ -37,7 +37,7 @@ RUN apt-get -y upgrade; \
 # Step 2 - for quick build
 ###
 FROM pgdev_step1 AS pgdev_step2
-MAINTAINER Jared Spencer <jared@playgroundsessions.com>
+LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 # tag local env for ansible
@@ -53,7 +53,7 @@ RUN echo "[local]" >> /etc/ansible/hosts && \
 # Step 2 - for quick build
 ###
 FROM pgdev_step2 AS pgdev_step3
-MAINTAINER Jared Spencer <jared@playgroundsessions.com>
+LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
@@ -76,8 +76,8 @@ ENTRYPOINT /bin/bash;
 ###
 # Step 3 - for quick build
 ###
-FROM pgdev_step3
-MAINTAINER Jared Spencer <jared@playgroundsessions.com>
+FROM pgdev_step3 AS pgdev_basic
+LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 # add new user to docker instance
