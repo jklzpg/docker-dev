@@ -1,7 +1,7 @@
 #############################
 # Playground Sessions | Dev #
 #############################
-FROM ubuntu:18.04
+FROM ubuntu:18.04 AS pgdev_step1
 MAINTAINER Jared Spencer <jared@playgroundsessions.com>
 
 # Fix debconf warnings upon build
@@ -31,11 +31,36 @@ RUN apt-get -y upgrade; \
         libasound2 \
         zip \
         unzip;
+
+
+###
+# Step 2 - for quick build
+###
+FROM pgdev_step1 AS pgdev_step2
+MAINTAINER Jared Spencer <jared@playgroundsessions.com>
+# Fix debconf warnings upon build
+ARG DEBIAN_FRONTEND=noninteractive
+# tag local env for ansible
+RUN echo "[local]" >> /etc/ansible/hosts && \
+    echo "localhost" >> /etc/ansible/hosts && \
+    echo "[docker]" >> /etc/ansible/hosts && \
+    echo "localhost" >> /etc/ansible/hosts && \
+# setup passwordless sudo
+    echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/passwordless-sudo;
+
+
+###
+# Step 2 - for quick build
+###
+FROM pgdev_step2 AS pgdev_step3
+MAINTAINER Jared Spencer <jared@playgroundsessions.com>
+
+# Fix debconf warnings upon build
+ARG DEBIAN_FRONTEND=noninteractive
 # install nodejs
- RUN curl -sL https://deb.nodesource.com/setup_10.x | -E bash - ;
+ RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
  RUN apt-get -y install \
         nodejs \
-        npm \
 # install PHP for enviroment 
         php7.2 \
         php7.2-cli \
@@ -46,15 +71,17 @@ RUN apt-get -y upgrade; \
         php-mbstring \
         php-intl \
         php-zip;
-# tag local env for ansible
-RUN echo "[local]" >> /etc/ansible/hosts && \
-    echo "localhost" >> /etc/ansible/hosts && \
-    echo "[docker]" >> /etc/ansible/hosts && \
-    echo "localhost" >> /etc/ansible/hosts && \
-# setup passwordless sudo
-    echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/passwordless-sudo && \
+ENTRYPOINT /bin/bash;
+
+###
+# Step 3 - for quick build
+###
+FROM pgdev_step3
+MAINTAINER Jared Spencer <jared@playgroundsessions.com>
+# Fix debconf warnings upon build
+ARG DEBIAN_FRONTEND=noninteractive
 # add new user to docker instance
-    useradd -ms /bin/bash pgdev && \
+RUN useradd -ms /bin/bash pgdev && \
     adduser pgdev sudo
 # act as new user
 USER pgdev
