@@ -16,22 +16,21 @@ RUN apt-get -y upgrade; \
         sudo \
         nodejs \
         build-essential \
-        git;
-
+        git \
 # install items handled by ansible 
-RUN apt-get -y --no-install-recommends install \
-    redis-server \
-    ant \
-    openssh-server;
+        redis-server \
+        ant \
+        openssh-server \
 #  Install Cypress dependencies
-RUN apt-get -y --no-install-recommends install \
-    xvfb \
-    libgtk2.0-0 \
-    libnotify-dev \
-    libgconf-2-4 \
-    libnss3 \
-    libxss1 \
-    libasound2
+        xvfb \
+        libgtk2.0-0 \
+        libnotify-dev \
+        libgconf-2-4 \
+        libnss3 \
+        libxss1 \
+        libasound2 \
+        zip \
+        unzip;
 # install PHP for enviroment
 RUN apt-get -y install \
     php7.2 \
@@ -47,11 +46,12 @@ RUN apt-get -y install \
 RUN echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts && \
     echo "[docker]" >> /etc/ansible/hosts && \
-    echo "localhost" >> /etc/ansible/hosts;
+    echo "localhost" >> /etc/ansible/hosts && \
 # setup passwordless sudo
-RUN echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/passwordless-sudo
+    echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/passwordless-sudo && \
 # add new user to docker instance
-RUN useradd -ms /bin/bash pgdev && adduser pgdev sudo
+    useradd -ms /bin/bash pgdev && \
+    adduser pgdev sudo
 # act as new user
 USER pgdev
 # set workdir to user home
