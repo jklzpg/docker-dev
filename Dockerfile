@@ -29,6 +29,7 @@ RUN apt-get -y upgrade; \
         libxss1 \
         libasound2 \
         zip \
+        tofrodos \
         unzip;
 
 
