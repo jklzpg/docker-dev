@@ -18,7 +18,6 @@ RUN apt-get -y upgrade; \
         git \
         curl \
 # install items handled by ansible 
-        redis-server \
         ant \
         openssh-server \
 #  Install Cypress dependencies
@@ -66,7 +65,6 @@ ARG DEBIAN_FRONTEND=noninteractive
         php7.2-cli \
         php-mysql \
         php-curl \
-        php-redis \
         php-simplexml \
         php-mbstring \
         php-intl \
