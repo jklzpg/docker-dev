@@ -12,12 +12,14 @@ WORKDIR "/application_run"
 # Install OS updates
 RUN apt-get update;
 RUN apt-get -y upgrade; \
-# Install ansible, sudo, git, curl, ant
+# Install ansible, sudo, git, curl, ant, zip, unzip
     apt-get -y --no-install-recommends install \
         ansible \
         sudo \
         git \
         curl \
-        ant;
+        ant \
+        zip \
+        unzip;
 
 ENTRYPOINT /bin/bash;
