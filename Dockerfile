@@ -1,12 +1,13 @@
 #############################
 # Playground Sessions | Dev #
 #############################
-FROM ubuntu:18.04 AS pgdev_step1
+FROM ubuntu:18.04 
 LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
-WORKDIR "/application"
+
+WORKDIR "/application_run"
 
 # Install OS updates
 RUN apt-get update;
@@ -29,15 +30,9 @@ RUN apt-get -y upgrade; \
         libxss1 \
         libasound2 \
         zip \
-        tofrodos \
         unzip;
 
 
-###
-# Step 2 - for quick build
-###
-FROM pgdev_step1 AS pgdev_step2
-LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 # tag local env for ansible
@@ -49,14 +44,6 @@ RUN echo "[local]" >> /etc/ansible/hosts && \
     echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/passwordless-sudo;
 
 
-###
-# Step 2 - for quick build
-###
-FROM pgdev_step2 AS pgdev_step3
-LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
-
-# Fix debconf warnings upon build
-ARG DEBIAN_FRONTEND=noninteractive
 # install nodejs
  RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
  RUN apt-get -y install \
@@ -70,15 +57,7 @@ ARG DEBIAN_FRONTEND=noninteractive
         php-mbstring \
         php-intl \
         php-zip;
-ENTRYPOINT /bin/bash;
 
-###
-# Step 3 - for quick build
-###
-FROM pgdev_step3 AS pgdev_basic
-LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
-# Fix debconf warnings upon build
-ARG DEBIAN_FRONTEND=noninteractive
 # add new user to docker instance
 RUN useradd -ms /bin/bash pgdev && \
     adduser pgdev sudo
