@@ -1,7 +1,7 @@
 #############################
 # Playground Sessions | Dev #
 #############################
-FROM ubuntu:18.04 
+FROM jklz/pg-dev:base
 LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
 
 # Fix debconf warnings upon build
