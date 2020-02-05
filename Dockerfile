@@ -7,7 +7,11 @@ LABEL maintainer="Jared Spencer <jared@playgroundsessions.com>"
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
 
-WORKDIR "/application_run"
+# User America/Bosie for docker timezone
+RUN sudo echo "America/Bosie" > /etc/timezone
+
+
+WORKDIR "/application_setup"
 
 # Install OS updates
 RUN apt-get update;
@@ -33,22 +37,26 @@ RUN apt-get -y upgrade; \
         unzip;
 
 
-# Fix debconf warnings upon build
-ARG DEBIAN_FRONTEND=noninteractive
 # tag local env for ansible
-RUN echo "[local]" >> /etc/ansible/hosts && \
-    echo "localhost" >> /etc/ansible/hosts && \
-    echo "[docker]" >> /etc/ansible/hosts && \
-    echo "localhost" >> /etc/ansible/hosts && \
+#RUN echo "[local]" >> /etc/ansible/hosts && \
+#    echo "localhost" >> /etc/ansible/hosts && \
+#    echo "[docker]" >> /etc/ansible/hosts && \
+#    echo "localhost" >> /etc/ansible/hosts
 # setup passwordless sudo
-    echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/passwordless-sudo;
+RUN echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/passwordless-sudo;
 
 
-# install nodejs
- RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
- RUN apt-get -y install \
+# Set working directory
+WORKDIR /application_setup/dev_setup
+
+# Add Node.js PPA
+RUN curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+
+# process installs at this level (node and php as both may need to be run)
+RUN apt-get -y install \
+# Install nodejs
         nodejs \
-# install PHP for enviroment 
+# Install PHP (force 7.2 for now)
         php7.2 \
         php7.2-cli \
         php-mysql \
@@ -56,7 +64,9 @@ RUN echo "[local]" >> /etc/ansible/hosts && \
         php-simplexml \
         php-mbstring \
         php-intl \
+        php-xdebug \
         php-zip;
+
 
 # add new user to docker instance
 RUN useradd -ms /bin/bash pgdev && \
@@ -67,7 +77,7 @@ USER pgdev
 WORKDIR /home/pgdev
 
 # add dir for composer and node
-RUN mkdir /home/pgdev/.composer -p && mkdir /home/pgdev/.npm;
+RUN mkdir /home/pgdev/.composer -p && mkdir /home/pgdev/.npm -p;
 
 # add volume for composer cache
 VOLUME /home/pgdev/.composer
